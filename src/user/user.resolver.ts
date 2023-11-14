@@ -4,11 +4,11 @@ import { CreateUserInput } from './dto/create-user.input';
 
 @Resolver()
 export class UserResolver {
-    constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
 
-    @Mutation(() => Boolean)
-    async createUser(@Args('input') input: CreateUserInput) {
-        // await this.userService.create(input);
-        return true;
-    }
+  @Mutation(() => Boolean)
+  async createUser(@Args('input') input: CreateUserInput) {
+    // await this.userService.create(input);
+    return true;
+  }
 }

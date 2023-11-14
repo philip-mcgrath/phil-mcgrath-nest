@@ -4,11 +4,11 @@ import { CreateProductInput } from './dto/create-product.input';
 
 @Resolver()
 export class ProductResolver {
-    constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService) {}
 
-    @Mutation(() => Boolean)
-    async createProduct(@Args('input') input: CreateProductInput) {
-        // await this.productService.create(input);
-        return true;
-    }
+  @Mutation(() => Boolean)
+  async createProduct(@Args('input') input: CreateProductInput) {
+    // await this.productService.create(input);
+    return true;
+  }
 }

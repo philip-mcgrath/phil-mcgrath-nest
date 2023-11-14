@@ -11,18 +11,20 @@ import { UserService } from './user/user.service';
 import { ProductService } from './product/product.service';
 
 @Module({
-  imports: [TypeOrmModule.forRoot({
-    type: 'sqlite',
-    database: ':memory:',
-    entities: [User, Product],
-    synchronize: true,
-  }),
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'sqlite',
+      database: ':memory:',
+      entities: [User, Product],
+      synchronize: true,
+    }),
     UserModule,
     ProductModule,
-  ServeStaticModule.forRoot({
-    rootPath: join(__dirname, '..', 'home'),
-  }),],
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'home'),
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService, UserService, ProductService],
 })
-export class AppModule { }
+export class AppModule {}

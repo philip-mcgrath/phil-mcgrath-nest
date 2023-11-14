@@ -3,18 +3,18 @@ import { Product } from './product.entity';
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column()
-    name: string;
+  @Column()
+  name: string;
 
-    @Column()
-    email: string;
+  @Column()
+  email: string;
 
-    @Column()
-    age: number;
+  @Column()
+  age: number;
 
-    @OneToMany(type => Product, product => product.id)
-    order: Product[];
+  @OneToMany((type) => Product, (product) => product.id)
+  order: Product[];
 }
