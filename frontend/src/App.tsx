@@ -4,6 +4,7 @@ import { request, gql } from 'graphql-request';
 
 const App = () => {
   const [product, setProduct] = useState({ field1: '', field2: '' });
+  const [response, setResponse] = useState('');
 
   const handleChange = (e: any) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
@@ -22,9 +23,22 @@ const App = () => {
     `;
     try {
       const response = await request('http://localhost:3003/graphql', mutation);
-      return response;
+      const parsedResponse = JSON.parse(JSON.stringify(response));
+      const formattedResponse = `Order Created:\n - ID: ${parsedResponse.createOrder.id}\n - Name: ${parsedResponse.createOrder.name}\n - Email: ${parsedResponse.createOrder.email}\n - Age: ${parsedResponse.createOrder.age}`;
+
+      setResponse(formattedResponse);
     } catch (error) {
       console.error(error);
+      const errorResponse = (error as Error).message;
+      if (errorResponse.includes('Product with name')) {
+        const productName = errorResponse
+          .split('Product with name ')[1]
+          .split(' not found.')[0];
+        const humanReadableError = `The product "${productName}" was not found. Please create it first.`;
+        setResponse(humanReadableError);
+      } else {
+        setResponse(errorResponse);
+      }
     }
   };
 
@@ -37,6 +51,7 @@ const App = () => {
           Add Product
         </button>
       </form>
+      <p>{response}</p>
     </div>
   );
 };

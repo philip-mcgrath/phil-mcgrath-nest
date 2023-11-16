@@ -1,18 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateProductInput } from './dto/update-product.input';
 import { Product } from './models/product.model';
+import { ProductsArray } from './data/products.data';
 
 @Injectable()
 export class ProductsService {
   constructor() {}
 
-  private readonly products: Array<Product> = [
-    {
-      id: '1',
-      name: 'Phone',
-      price: 799,
-    },
-  ];
+  products = ProductsArray;
 
   create(product: Product): Product {
     product.id = (this.products.length + 1).toString();

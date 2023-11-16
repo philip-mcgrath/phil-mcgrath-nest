@@ -27,3 +27,12 @@
 .App form button:hover {
   background-color: #45a049;
 }
+
+.App p {
+  text-align: center;
+  font-size: 18px;
+  color: #333;
+  margin-top: 20px;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
