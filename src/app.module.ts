@@ -1,30 +1,38 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User, Product } from './entities';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserModule } from './user/user.module';
-import { ProductModule } from './product/product.module';
-import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { UserService } from './user/user.service';
-import { ProductService } from './product/product.service';
+import { ProductsModule } from './products/products.module';
+import { UsersModule } from './users/users.module';
+import { Product } from './products/models/product.model';
+import { User } from './users/models/user.model';
+import { UsersService } from './users/users.service';
+import { ProductsService } from './products/products.service';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: ':memory:',
-      entities: [User, Product],
+      entities: [Product, User],
       synchronize: true,
+      autoLoadEntities: true,
     }),
-    UserModule,
-    ProductModule,
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'home'),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'schema.gql'),
+      playground: true,
     }),
+    UsersModule,
+    ProductsModule,
+    UsersModule,
   ],
   controllers: [AppController],
-  providers: [AppService, UserService, ProductService],
+  providers: [AppService, UsersService, ProductsService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor() {}
+}
