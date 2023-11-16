@@ -4,7 +4,7 @@
 $ pnpm install
 ```
 
-## Running the app
+## Running the backend app
 
 ```bash
 # development
@@ -17,15 +17,13 @@ $ pnpm run start:dev
 $ pnpm run start:prod
 ```
 
-## Test
+## Running the frontend app
 
 ```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+$ cd frontend
+$ npm run start
 ```
+
+## Queries
+
+A set of sample GraphQL queries can be found in `graphql-queries.json` (Exported from Insomnia Curl).
