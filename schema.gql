@@ -14,40 +14,30 @@ type User {
   name: String!
   email: String!
   age: Int!
-  orders: [String!]
+  order: [Product]!
+}
+
+input ProductInput {
+  id: ID!
+  name: String!
+  price: Int!
 }
 
 type Query {
+  products: [Product!]!
+  product(name: String!): Product!
   users: [User!]!
   user(id: Int!): User!
-  products: [Product!]!
-  product(id: Int!): Product!
 }
 
 type Mutation {
+  createProduct(createProductInput: CreateProductInput!): Product!
+  updateProduct(updateProductInput: UpdateProductInput!): Product!
+  removeProduct(id: Int!): Product!
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Int!): User!
   createOrder(name: String!, productName: String!): User!
-  createProduct(createProductInput: CreateProductInput!): Product!
-  updateProduct(updateProductInput: UpdateProductInput!): Product!
-  removeProduct(id: Int!): Product!
-}
-
-input CreateUserInput {
-  id: String!
-  name: String!
-  email: String!
-  age: Float!
-  orders: [String!]
-}
-
-input UpdateUserInput {
-  id: Int!
-  name: String
-  email: String
-  age: Float
-  orders: [String!]
 }
 
 input CreateProductInput {
@@ -60,4 +50,20 @@ input UpdateProductInput {
   id: Int!
   name: String
   price: Float
+}
+
+input CreateUserInput {
+  id: String!
+  name: String!
+  email: String!
+  age: Float!
+  order: [ProductInput!] = []
+}
+
+input UpdateUserInput {
+  id: Int!
+  name: String
+  email: String
+  age: Float
+  order: [ProductInput!] = []
 }

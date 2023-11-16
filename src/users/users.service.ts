@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { User } from './models/user.model';
 import { UpdateUserInput } from './dto/update-user.input';
 import { ProductsService } from 'src/products/products.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class UsersService {
-  constructor(private productsService: ProductsService) {}
+  constructor(private readonly productsService: ProductsService) {}
 
   private readonly users: Array<User> = [
     {
@@ -13,7 +14,7 @@ export class UsersService {
       name: 'John',
       email: 'john.doe@example.com',
       age: 25,
-      orders: [],
+      order: [],
     },
   ];
 
@@ -43,5 +44,29 @@ export class UsersService {
   async remove(id: number): Promise<void> {
     this.users.splice(id, 1);
     return;
+  }
+
+  async createOrder(name: string, productName: string): Promise<User> {
+    let user = this.findOne(name);
+    if (!user) {
+      user = this.create({
+        id: new uuidv4(),
+        name: name,
+        email: `${name}@example.com`,
+        age: 0,
+        order: [],
+      });
+    }
+
+    const product = await this.productsService.findOne(productName);
+
+    if (!product) {
+      throw new Error(
+        `Product with name ${productName} not found. Please create it first.`,
+      );
+    }
+
+    user.order.push(product);
+    return this.update(user.id, user);
   }
 }

@@ -1,7 +1,8 @@
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ID, InputType, Int, ObjectType } from '@nestjs/graphql';
 import { IsUUID, MinLength, IsDecimal } from 'class-validator';
 
 @ObjectType()
+@InputType('ProductInput')
 export class Product {
   @IsUUID()
   @Field(() => ID)
@@ -11,7 +12,7 @@ export class Product {
   @Field(() => String)
   name: string;
 
-  @IsDecimal()
+  @IsDecimal({ decimal_digits: '2' })
   @Field(() => Int)
   price: number;
 }

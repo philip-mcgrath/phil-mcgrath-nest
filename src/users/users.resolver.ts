@@ -1,17 +1,12 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { UsersService } from './users.service';
-import { ProductsService } from 'src/products/products.service';
 import { User } from './models/user.model';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import { v4 as uuidv4 } from 'uuid';
 
 @Resolver(() => User)
 export class UsersResolver {
-  constructor(
-    private readonly usersService: UsersService,
-    private readonly productsService: ProductsService,
-  ) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @Mutation(() => User)
   createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
@@ -43,24 +38,6 @@ export class UsersResolver {
     @Args('name', { type: () => String }) name: string,
     @Args('productName', { type: () => String }) productName: string,
   ) {
-    let user = await this.usersService.findOne(name);
-    if (!user) {
-      user = await this.usersService.create({
-        id: new uuidv4(),
-        name: name,
-        email: 'default@example.com',
-        age: 0,
-        orders: [],
-      });
-    }
-
-    const product = await this.productsService.findOne(productName);
-
-    if (!product) {
-      throw new Error(`Product ${productName} not found`);
-    }
-
-    user.orders.push(product);
-    return this.usersService.update(user.id, user);
+    return this.usersService.createOrder(name, productName);
   }
 }

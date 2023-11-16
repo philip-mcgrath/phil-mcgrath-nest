@@ -1,9 +1,10 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { MinLength, IsEmail, IsOptional, IsInt } from 'class-validator';
+import { MinLength, IsEmail, IsOptional, IsInt, IsUUID } from 'class-validator';
 import { Product } from 'src/products/models/product.model';
 
 @InputType()
 export class CreateUserInput {
+  @IsUUID()
   @Field()
   id: string;
 
@@ -15,11 +16,11 @@ export class CreateUserInput {
   @Field()
   email: string;
 
-  @Field()
   @IsInt()
+  @Field()
   age: number;
 
-  @Field({ nullable: true })
+  @Field({ nullable: true, defaultValue: [] })
   @IsOptional()
-  orders: Product[];
+  order: Product[];
 }
